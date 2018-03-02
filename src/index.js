@@ -1,4 +1,4 @@
-module.exports = 
+/*module.exports = 
 function check(str, bracketsConfig) {
   var stack = [], stroka = [];
 
@@ -62,14 +62,31 @@ function check(str, bracketsConfig) {
   }
   //console.log("tr");
   return true;
-}
-/*
-const config1 = [['(', ')']];
-const config2 = [['(', ')'], ['[', ']']];
-const config3 = [['(', ')'], ['[', ']'], ['{', '}']];
-const config4 = [['|', '|']];
-const config5 = [['(', ')'], ['|', '|']];
-const config6 = [['1', '2'], ['3', '4'], ['5', '6'], ['7', '7'], ['8', '8']];
-const config7 = [['(', ')'], ['[', ']'], ['{', '}'], ['|', '|']];
+}*/
 
-check('([{}])', config3);*/
+module.exports = function check(str, bracketsConfig) {
+  let stackOfBrackets = [];
+
+  for (let i = 0; i < str.length; i++) {
+    for (let j = 0; j < bracketsConfig.length; j++) {
+      if (str[i] == bracketsConfig[j][0] && str[i] == bracketsConfig[j][1] && stackOfBrackets[stackOfBrackets.length - 1] == bracketsConfig[j][0]) {
+        stackOfBrackets.pop();
+      } else if ((str[i] == bracketsConfig[j][0] && str[i] == bracketsConfig[j][1])
+              || (str[i] == bracketsConfig[j][0] && str[i] != bracketsConfig[j][1])) {
+        stackOfBrackets.push(str[i]);
+      } else if (str[i] == bracketsConfig[j][1] && stackOfBrackets.length == 0) {
+        return false;
+      } else if (str[i] == bracketsConfig[j][1] && stackOfBrackets[stackOfBrackets.length - 1] != bracketsConfig[j][0]) {
+        return false;
+      } else if (str[i] == bracketsConfig[j][1] && stackOfBrackets[stackOfBrackets.length - 1] == bracketsConfig[j][0]) {
+        stackOfBrackets.pop();
+      }
+    }
+  }
+
+  if (stackOfBrackets.length != 0){
+    return false;
+  }
+ 
+  return true;
+}
